@@ -10,35 +10,38 @@ function App() {
   const [startingTime, setStartingTime] = useState(0)
   const [timeAtPause, setTimeAtPause] = useState(0)
   const [formattedTime, setFormattedTime] = useState(updateTimer(0))
-  const requestRef = useRef()
+  const [animationFrameId, setAnimationFrameId] = useState(0)
 
   const runTimer = (timestamp) => {
-    if (startingTime === 0) setStartingTime(timestamp) 
-  
-    setElapsedTime( timestamp - startingTime + timeAtPause)
-    requestRef.current = requestAnimationFrame(runTimer)
+    if (startingTime === 0) setStartingTime(timestamp)
+
+    setElapsedTime(timestamp - startingTime + timeAtPause)
+    setAnimationFrameId(requestAnimationFrame(runTimer))
   }
-  useEffect(()=>{
-    setFormattedTime(updateTimer(elapsedTime))},[elapsedTime])
+
+  useEffect(() => {
+    setFormattedTime(updateTimer(elapsedTime))
+  }, [elapsedTime])
 
   useEffect(() => {
     if (isTimeRunning) {
-      requestRef.current = requestAnimationFrame(runTimer)
-      return ()=> {cancelAnimationFrame(requestRef.current)}
-    }}, [isTimeRunning]);
-    
-    useEffect(()=> {
-      if(!isTimeRunning){
-        cancelAnimationFrame(requestRef.current)
-        setStartingTime(0)
-        setTimeAtPause(elapsedTime)
-        return () => cancelAnimationFrame(requestRef.current)}
-      }, [isTimeRunning])
-      
-  const handleClick = ()=>{
+      setAnimationFrameId(requestAnimationFrame(runTimer))
+    }
+    return () => { cancelAnimationFrame(animationFrameId) } //if the component is uunmounted while the time is runnning
+  }, [isTimeRunning]);
+
+  useEffect(() => {
+    if (!isTimeRunning) {
+      cancelAnimationFrame(animationFrameId)
+      setStartingTime(0)
+      setTimeAtPause(elapsedTime)
+    }
+  }, [isTimeRunning])
+
+  const handleClick = () => {
     setIsTimeRunning(true)
   }
-  const doStart = ()=>{
+  const doStart = () => {
     setIsTimeRunning(false)
   }
   return (
