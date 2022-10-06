@@ -9,3 +9,5 @@ export const updateTimer = (elapsedTime) => {
     return `${formatNumber(minutes)}:${formatNumber(seconds)}.${formatNumber(centiseconds)}`
 
 }
+
+export default updateTimer
