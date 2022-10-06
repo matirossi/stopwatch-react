@@ -15,7 +15,7 @@ function App() {
   const runTimer = (timestamp) => {
     if (startingTime === 0) setStartingTime(timestamp)
 
-    setElapsedTime(timestamp - startingTime + timeAtPause)
+    setElapsedTime(timestamp - startingTime)
     setAnimationFrameId(requestAnimationFrame(runTimer))
   }
 
@@ -39,10 +39,7 @@ function App() {
   }, [isTimeRunning])
 
   const handleClick = () => {
-    setIsTimeRunning(true)
-  }
-  const doStart = () => {
-    setIsTimeRunning(false)
+    setIsTimeRunning(!isTimeRunning)
   }
   return (
     <div className="App">
@@ -50,7 +47,7 @@ function App() {
         <span className="main-timer">{formattedTime}</span>
         <div className="buttons-container">
           {!isTimeRunning && <button className="start-button" onClick={handleClick}>start</button>}
-          {isTimeRunning && <button className="stop-button" onClick={doStart}>stop</button>}
+          {isTimeRunning && <button className="stop-button" onClick={handleClick}>stop</button>}
         </div>
       </div>
     </div>
