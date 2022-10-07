@@ -9,11 +9,12 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [updateTimesList, setUpdateTimesList] = useState(0)
-  
+
 
   const runTimer = () => {
     setElapsedTime(prev => {
-      return prev + 60})
+      return prev + 60
+    })
   }
 
   useEffect(() => {
@@ -30,7 +31,7 @@ function App() {
   const toggleIsTimeRunning = () => {
     setIsTimeRunning(!isTimeRunning)
   }
-  
+
   const addElapsedTime = () => {
     setUpdateTimesList(prev => prev + 1)
   }
@@ -42,14 +43,14 @@ function App() {
   return (
     <main className="App">
       <section className="stopwatch-container">
-      <div className="main-timer-container">
-        <MainTimer elapsedTime={elapsedTime} />
-        
-        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll}/>
-      </div>
-      <section className="laps-container">
-        <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
-      </section>
+        <div className="main-timer-container">
+          <MainTimer elapsedTime={elapsedTime} />
+
+          <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll} />
+        </div>
+        <section className="laps-container">
+          <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
+        </section>
       </section>
     </main>
   )

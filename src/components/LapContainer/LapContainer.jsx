@@ -3,6 +3,7 @@ import updateTimer from "../../utils"
 
 const LapContainer = ({ elapsedTime, updateTimesList }) => {
     const [timesList, setTimesList] = useState([])
+
     const totalLapsElapsedTime = timesList.reduce((prev, curr) => prev + curr, 0)
 
     let longestElapsedTimeIndex
@@ -11,6 +12,11 @@ const LapContainer = ({ elapsedTime, updateTimesList }) => {
         longestElapsedTimeIndex = timesList.indexOf(Math.max(...timesList))
         shortestElapsedTimeIndex = timesList.indexOf(Math.min(...timesList))
     }
+
+    const emptyLaps = [null, null, null, null, null, null, null]
+    if (elapsedTime > 0) emptyLaps.length -= 1
+    if (timesList.length < 5) emptyLaps.length -= timesList.length
+    if (timesList.length > 4) emptyLaps.length = 0
 
     useEffect(() => {
         if (updateTimesList === 0) {
@@ -23,15 +29,9 @@ const LapContainer = ({ elapsedTime, updateTimesList }) => {
         }
     }, [updateTimesList])
 
-    const emptyLaps = [null, null, null, null, null, null, null]
-    if(elapsedTime > 0) emptyLaps.length -= 1
-    if(timesList.length < 5) emptyLaps.length -= timesList.length
-    if(timesList.length > 4) emptyLaps.length = 0
-
-
     return (
         <ul className="laps-list">
-            {elapsedTime === 0 && emptyLaps.map((lap, index) => {return <li key={index} className="lap"></li> })}
+            {elapsedTime === 0 && emptyLaps.map((lap, index) => { return <li key={index} className="lap"></li> })}
             {elapsedTime > 0 && <li className="lap"><span>Lap {timesList.length + 1}</span><span>{updateTimer(elapsedTime - totalLapsElapsedTime)}</span></li>}
 
             {timesList && timesList.map((lapTime, index) => {
@@ -40,7 +40,7 @@ const LapContainer = ({ elapsedTime, updateTimesList }) => {
                 return <li key={index} className="lap"><span>Lap {timesList.length - index}</span><span>{updateTimer(lapTime)}</span></li>
             })}
 
-            {elapsedTime > 0 && emptyLaps && emptyLaps.map((lap, index) => {return <li key={index} className="lap"></li> })}
+            {elapsedTime > 0 && emptyLaps && emptyLaps.map((lap, index) => { return <li key={index} className="lap"></li> })}
         </ul>
     )
 }
