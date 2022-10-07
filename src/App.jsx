@@ -47,7 +47,7 @@ function App() {
         
         <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll}/>
       </div>
-      <section className="lap-container">
+      <section className="laps-container">
         <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
       </section>
       </section>
