@@ -19,7 +19,7 @@ const LapContainer = ({ elapsedTime, updateTimesList }) => {
     if (timesList.length > 4) emptyLaps.length = 0
 
     useEffect(() => {
-        if (updateTimesList === 0) {
+        if (updateTimesList === 0) { //reset timeList if updateTimeList is reseted
             setTimesList([])
         }
         if (updateTimesList > 0) {

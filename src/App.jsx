@@ -8,22 +8,25 @@ import LapContainer from './components/LapContainer/LapContainer'
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
+  const [timeAtPause, setTimeAtPause] = useState(0)
   const [updateTimesList, setUpdateTimesList] = useState(0)
 
 
-  const runTimer = () => {
-    setElapsedTime(prev => {
-      return prev + 60
-    })
+  const runTimer = (startingDate) => {
+    const currentDate = Date.now()
+    
+    setElapsedTime(currentDate - startingDate + timeAtPause)
   }
 
   useEffect(() => {
     let intervalId
+    const startingDate = Date.now()
     if (isTimeRunning) {
-      intervalId = setInterval(runTimer, 50)
+      intervalId = setInterval(runTimer, 10, startingDate)
     }
     if (!isTimeRunning) {
       clearInterval(intervalId)
+      setTimeAtPause(elapsedTime)
     }
     return () => { clearInterval(intervalId) } //if the component is unmounted while the time is runnning?
   }, [isTimeRunning]);
@@ -38,6 +41,7 @@ function App() {
 
   const resetAll = () => {
     setElapsedTime(0)
+    setTimeAtPause(0)
     setUpdateTimesList(0)
   }
   return (
