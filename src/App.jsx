@@ -7,11 +7,11 @@ import LapContainer from './components/LapContainer/LapContainer'
 
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
-  const [isTimeRunning, setIsTimeRunning] = useState()
+  const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [updateTimesList, setUpdateTimesList] = useState(0)
   
 
-  const runTimer = (timestamp) => {
+  const runTimer = () => {
     setElapsedTime(prev => {
       return prev + 60})
   }
@@ -19,12 +19,12 @@ function App() {
   useEffect(() => {
     let intervalId
     if (isTimeRunning) {
-      intervalId = setInterval(runTimer, 60)
+      intervalId = setInterval(runTimer, 50)
     }
     if (!isTimeRunning) {
       clearInterval(intervalId)
     }
-    return () => { clearInterval(intervalId) } //if the component is uunmounted while the time is runnning?
+    return () => { clearInterval(intervalId) } //if the component is unmounted while the time is runnning?
   }, [isTimeRunning]);
 
   const toggleIsTimeRunning = () => {
@@ -35,13 +35,17 @@ function App() {
     setUpdateTimesList(prev => prev + 1)
   }
 
+  const resetAll = () => {
+    setElapsedTime(0)
+    setUpdateTimesList(0)
+  }
   return (
     <main className="App">
       <section className="stopwatch-container">
       <div className="main-timer-container">
         <MainTimer elapsedTime={elapsedTime} />
         
-        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime}/>
+        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll}/>
       </div>
       <section className="lap-container">
         <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />

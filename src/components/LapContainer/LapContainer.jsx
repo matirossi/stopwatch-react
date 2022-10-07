@@ -14,6 +14,9 @@ const LapContainer = ({ elapsedTime, updateTimesList}) => {
 
     useEffect(() => {
         console.log("effect")
+        if(updateTimesList === 0){
+            setTimesList([])
+        }
         if(updateTimesList > 0){
             const newLapTime = timesList.reduce((prev,curr)=> prev-curr, elapsedTime)
             setTimesList([newLapTime, ...timesList])
