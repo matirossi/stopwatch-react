@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import updateTimer from './utils'
 import './App.css'
+import Buttons from './components/Buttons./Buttons'
+import MainTimer from './components/MainTimer/MainTimer'
+import LapContainer from './components/LapContainer/LapContainer'
 
 
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState()
+  const [timeList, setTimesList] = useState()
+  
 
   const runTimer = (timestamp) => {
     setElapsedTime(prev => {
@@ -24,19 +27,25 @@ function App() {
     return () => { clearInterval(intervalId) } //if the component is uunmounted while the time is runnning?
   }, [isTimeRunning]);
 
-  const handleClick = () => {
+  const toggleIsTimeRunning = () => {
     setIsTimeRunning(!isTimeRunning)
   }
+
+  const addElapsedTime = () => {
+    setTimesList = [...timesList, elapsedTime]
+  }
   return (
-    <div className="App">
+    <main className="App">
+      <section className="stopwatch-container">
       <div className="main-timer-container">
-        <span className="main-timer">{updateTimer(elapsedTime)}</span>
-        <div className="buttons-container">
-          {!isTimeRunning && <button className="start-button" onClick={handleClick}>start</button>}
-          {isTimeRunning && <button className="stop-button" onClick={handleClick}>stop</button>}
-        </div>
+        <MainTimer elapsedTime={elapsedTime} />
+        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime}/>
       </div>
-    </div>
+      <section className="lap-container">
+        <LapContainer elapsedTime={elapsedTime}/>
+      </section>
+      </section>
+    </main>
   )
 }
 
