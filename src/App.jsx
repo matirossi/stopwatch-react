@@ -8,7 +8,7 @@ import LapContainer from './components/LapContainer/LapContainer'
 function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState()
-  const [timeList, setTimesList] = useState()
+  const [updateTimesList, setUpdateTimesList] = useState(0)
   
 
   const runTimer = (timestamp) => {
@@ -30,19 +30,21 @@ function App() {
   const toggleIsTimeRunning = () => {
     setIsTimeRunning(!isTimeRunning)
   }
-
+  
   const addElapsedTime = () => {
-    setTimesList = [...timesList, elapsedTime]
+    setUpdateTimesList(prev => prev + 1)
   }
+
   return (
     <main className="App">
       <section className="stopwatch-container">
       <div className="main-timer-container">
         <MainTimer elapsedTime={elapsedTime} />
-        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime}/>
+        
+        <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime}/>
       </div>
       <section className="lap-container">
-        <LapContainer elapsedTime={elapsedTime}/>
+        <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
       </section>
       </section>
     </main>
