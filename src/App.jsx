@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
-import Buttons from './components/Buttons./Buttons'
+import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
 import LapContainer from './components/LapContainer/LapContainer'
 
