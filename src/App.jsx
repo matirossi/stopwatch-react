@@ -47,11 +47,10 @@ function App() {
   return (
     <main className="App">
       <section className="stopwatch-container">
-        <div className="main-timer-container">
+        <section className="main-timer-container">
           <MainTimer elapsedTime={elapsedTime} />
-
           <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll} />
-        </div>
+        </section>
         <section className="laps-container">
           <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
         </section>
