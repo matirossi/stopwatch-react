@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 const Buttons = ({ toggleIsTimeRunning, isTimeRunning, elapsedTime, addElapsedTime, resetAll }) => {
     return (
         <div className="buttons-container">
