@@ -20,6 +20,7 @@ function App() {
 
   useEffect(() => {
     let intervalId
+    intervalId = elapsedTime;
     const startingDate = Date.now()
     if (isTimeRunning) {
       intervalId = setInterval(runTimer, 10, startingDate)
