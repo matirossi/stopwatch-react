@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
@@ -9,18 +9,17 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [timeAtPause, setTimeAtPause] = useState(0)
-  const [updateTimesList, setUpdateTimesList] = useState(0)
+  const [updateTimesList, setUpdateTimesList] = useState(0) // counter used to trigger function in LapContainer when LapButton is onclick
 
 
-  const runTimer = (startingDate) => {
-    const currentDate = Date.now()
-    
-    setElapsedTime(currentDate - startingDate + timeAtPause)
-  }
-
+  
   useEffect(() => {
     let intervalId
-    intervalId = elapsedTime;
+    const runTimer = (startingDate) => {
+      const currentDate = Date.now()
+      
+      setElapsedTime(currentDate - startingDate + timeAtPause)
+    }
     const startingDate = Date.now()
     if (isTimeRunning) {
       intervalId = setInterval(runTimer, 10, startingDate)
