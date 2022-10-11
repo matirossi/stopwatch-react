@@ -4,12 +4,6 @@ import EmptyLaps from "../../EmptyLaps.jsx"
 
 const LapContainer = ({ elapsedTime, laps, totalLapsElapsedTime, maxLap, minLap}) => {
 
-useEffect(()=> console.log(minLap, maxLap), [minLap, maxLap])
-/*     const emptyLaps = [null, null, null, null, null, null, null]
-    if (elapsedTime > 0) emptyLaps.length -= 1
-    if (timesList.length < 5) emptyLaps.length -= timesList.length
-    if (timesList.length > 4) emptyLaps.length = 0 */
-
     return (
         <ul className="laps-list">
             {elapsedTime > 0 && <li className="lap"><span>Lap {laps.length + 1}</span><span>{updateTimer(elapsedTime - totalLapsElapsedTime)}</span></li>}
