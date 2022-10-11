@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import updateTimer from "../../utils"
+import EmptyLaps from "../../EmptyLaps.jsx"
 
 const LapContainer = ({ elapsedTime, laps, totalLapsElapsedTime, maxLap, minLap}) => {
 
@@ -11,7 +12,6 @@ useEffect(()=> console.log(minLap, maxLap), [minLap, maxLap])
 
     return (
         <ul className="laps-list">
-            {/* elapsedTime === 0 && emptyLaps.map((lap, index) => { return <li key={index} className="lap"></li> }) */}
             {elapsedTime > 0 && <li className="lap"><span>Lap {laps.length + 1}</span><span>{updateTimer(elapsedTime - totalLapsElapsedTime)}</span></li>}
 
             {laps && laps.map((lapObj) => {
@@ -20,8 +20,7 @@ useEffect(()=> console.log(minLap, maxLap), [minLap, maxLap])
                 :  <li key={lapObj.lapNumber} className="lap"><span>Lap {lapObj.lapNumber}</span><span>{updateTimer(lapObj.lapElapsedTime)}</span></li>
             })}
 
-            {/* elapsedTime > 0 && emptyLaps && emptyLaps.map((lap, index) => { return <li key={index} className="lap"></li> }) */}
-            {/* <EmptyLaps numberOfEmptyLaps={8 - laps.length} /> */}
+            <EmptyLaps numberOfEmptyLaps={6 - laps.length} /> 
         </ul>
     )
 }
