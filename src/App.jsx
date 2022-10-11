@@ -9,13 +9,10 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [timeAtPause, setTimeAtPause] = useState(0)
-  const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) // counter used to trigger function in LapContainer when LapButton is onclick
+  const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) 
   const [laps, setLaps] = useState([])
-  // { lapNumber: 6, time: 095489 }
-  // { lapNumber: 5, time: 095489 }
-  // { lapNumber: 4, time: 095489 }
-  // { lapNumber: 3, time: 095489 }
-  // { lapNumber: 2, time: 095489 }
+  const [maxLap, setMaxLap] = useState({})
+  const [minLap, setMinLap] = useState({})
   
   useEffect(() => {
     let intervalId
@@ -32,11 +29,20 @@ function App() {
       clearInterval(intervalId)
       setTimeAtPause(elapsedTime)
     }
-    return () => { clearInterval(intervalId) } //if the component is unmounted while the time is runnning?
+    return () => { clearInterval(intervalId) } 
   }, [isTimeRunning]);
 
   const toggleIsTimeRunning = () => {
     setIsTimeRunning(!isTimeRunning)
+  }
+
+  const calculateMaxLap = (newLap) => {
+    if (newLap.lapElapsedTime > maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
+    if (!maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
+  }
+  const calculateMinLap = (newLap) => {
+    if (newLap.lapElapsedTime < minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
+    if (!minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
   }
 
   const addNewLap = () => {
@@ -47,7 +53,8 @@ function App() {
     const newLapsArr = [newLap, ...laps]
     setLaps(newLapsArr)
     setTotalLapsElapsedTime(previousLapsElapsedTime + lapElapsedTime)
-    console.log("lapped", laps)
+    calculateMaxLap(newLap)
+    calculateMinLap(newLap)
   }
 
   const resetAll = () => {
@@ -64,7 +71,7 @@ function App() {
           <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addNewLap} resetAll={resetAll} />
         </section>
         <section className="laps-container">
-          <LapContainer elapsedTime={elapsedTime} laps={laps} totalLapsElapsedTime={totalLapsElapsedTime} />
+          <LapContainer elapsedTime={elapsedTime} laps={laps} totalLapsElapsedTime={totalLapsElapsedTime} maxLap={maxLap} minLap={minLap}/>
         </section>
       </section>
     </main>
