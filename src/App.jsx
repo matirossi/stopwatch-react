@@ -9,9 +9,13 @@ function App() {
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [timeAtPause, setTimeAtPause] = useState(0)
-  const [updateTimesList, setUpdateTimesList] = useState(0) // counter used to trigger function in LapContainer when LapButton is onclick
-
-
+  const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) // counter used to trigger function in LapContainer when LapButton is onclick
+  const [laps, setLaps] = useState([])
+  // { lapNumber: 6, time: 095489 }
+  // { lapNumber: 5, time: 095489 }
+  // { lapNumber: 4, time: 095489 }
+  // { lapNumber: 3, time: 095489 }
+  // { lapNumber: 2, time: 095489 }
   
   useEffect(() => {
     let intervalId
@@ -35,24 +39,32 @@ function App() {
     setIsTimeRunning(!isTimeRunning)
   }
 
-  const addElapsedTime = () => {
-    setUpdateTimesList(prev => prev + 1)
+  const addNewLap = () => {
+    const lapNumber = laps.length + 1
+    const previousLapsElapsedTime = laps.map(lapObj => lapObj.lapElapsedTime).reduce((acc, curr)=> acc + curr,0)
+    const lapElapsedTime = elapsedTime - previousLapsElapsedTime
+    const newLap = {lapNumber, lapElapsedTime}
+    const newLapsArr = [newLap, ...laps]
+    setLaps(newLapsArr)
+    setTotalLapsElapsedTime(previousLapsElapsedTime + lapElapsedTime)
+    console.log("lapped", laps)
   }
 
   const resetAll = () => {
     setElapsedTime(0)
     setTimeAtPause(0)
-    setUpdateTimesList(0)
+    setTotalLapsElapsedTime(0)
+    setLaps([])
   }
   return (
     <main className="App">
       <section className="stopwatch-container">
         <section className="main-timer-container">
           <MainTimer elapsedTime={elapsedTime} />
-          <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addElapsedTime} resetAll={resetAll} />
+          <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addNewLap} resetAll={resetAll} />
         </section>
         <section className="laps-container">
-          <LapContainer elapsedTime={elapsedTime} updateTimesList={updateTimesList} />
+          <LapContainer elapsedTime={elapsedTime} laps={laps} totalLapsElapsedTime={totalLapsElapsedTime} />
         </section>
       </section>
     </main>
