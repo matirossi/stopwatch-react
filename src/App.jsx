@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import './App.css'
 import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
@@ -6,9 +6,8 @@ import LapContainer from './components/LapContainer/LapContainer'
 
 
 function App() {
-  const [elapsedTime, setElapsedTime] = useState(0)
+  const [elapsedTime, setElapsedTime] = useState(0) 
   const [isTimeRunning, setIsTimeRunning] = useState(false)
-  const [timeAtPause, setTimeAtPause] = useState(0)
   const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) 
   const [laps, setLaps] = useState([])
   const [maxLap, setMaxLap] = useState({})
@@ -19,15 +18,14 @@ function App() {
     const runTimer = (startingDate) => {
       const currentDate = Date.now()
       
-      setElapsedTime(currentDate - startingDate + timeAtPause)
+      setElapsedTime(currentDate - startingDate)
     }
-    const startingDate = Date.now()
+    const startingDate = Date.now() - elapsedTime
     if (isTimeRunning) {
       intervalId = setInterval(runTimer, 10, startingDate)
     }
     if (!isTimeRunning) {
       clearInterval(intervalId)
-      setTimeAtPause(elapsedTime)
     }
     return () => { clearInterval(intervalId) } 
   }, [isTimeRunning]);
@@ -59,7 +57,6 @@ function App() {
 
   const resetAll = () => {
     setElapsedTime(0)
-    setTimeAtPause(0)
     setTotalLapsElapsedTime(0)
     setLaps([])
   }
