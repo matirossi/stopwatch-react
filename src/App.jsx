@@ -4,18 +4,24 @@ import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
 import LapContainer from './components/LapContainer/LapContainer'
 
-
 function App() {
-
-
-
+  const lapsReducer = (state, action) => {
+    switch (action.type) {
+        case 'addNewLap':
+            return { ...state, laps: [action.newLap, ...state.laps], totalLapsElapsedTime: elapsedTime }
+        case 'updateMaxLap':
+            return { ...state, maxLap: action.newLap }
+        case 'updateMinLap':
+            return { ...state, minLap: action.newLap }
+        case 'resetAll':
+            return { laps: [], maxLap: { lapElapsedTime: 0 }, minLap: { lapElapsedTime: Infinity }, totalLapsElapsedTime: 0 }
+    }
+}
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
+  const [{laps, maxLap, minLap, totalLapsElapsedTime}, lapsDispatch] = useReducer(lapsReducer, {laps: [], maxLap:{lapElapsedTime: 0}, minLap: {lapElapsedTime: Infinity}, totalLapsElapsedTime: 0} )
+
   //const intervalId = useRef(0)
-  const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) 
-  const [laps, setLaps] = useState([])
-  const [maxLap, setMaxLap] = useState({})
-  const [minLap, setMinLap] = useState({})
   
   const runTimer = (startingDate) => {
     const currentDate = Date.now()
@@ -34,30 +40,24 @@ function App() {
   }, [isTimeRunning]);
   
   const calculateMaxLap = (newLap) => {
-    if (newLap.lapElapsedTime > maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
-    if (!maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
+    if (newLap.lapElapsedTime > maxLap.lapElapsedTime) {lapsDispatch({type: 'updateMaxLap', newLap: newLap})}
   }
   const calculateMinLap = (newLap) => {
-    if (newLap.lapElapsedTime < minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
-    if (!minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
+    if (newLap.lapElapsedTime < minLap.lapElapsedTime) {lapsDispatch({type: 'updateMinLap', newLap: newLap})}
   }
   
   const addNewLap = () => {
     const lapNumber = laps.length + 1
-    const previousLapsElapsedTime = laps.map(lapObj => lapObj.lapElapsedTime).reduce((acc, curr)=> acc + curr,0)
-    const lapElapsedTime = elapsedTime - previousLapsElapsedTime
+    const lapElapsedTime = elapsedTime - totalLapsElapsedTime
     const newLap = {lapNumber, lapElapsedTime}
-    const newLapsArr = [newLap, ...laps]
-    setLaps(newLapsArr)
-    setTotalLapsElapsedTime(previousLapsElapsedTime + lapElapsedTime)
+    lapsDispatch({type: 'addNewLap', newLap: newLap})
     calculateMaxLap(newLap)
     calculateMinLap(newLap)
   }
   
   const resetAll = () => {
     setElapsedTime(0)
-    setTotalLapsElapsedTime(0)
-    setLaps([])
+    lapsDispatch({type: 'resetAll'})
   }
 
   const handleStartStop = () => {
