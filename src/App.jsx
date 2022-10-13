@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import './App.css'
 import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
@@ -6,36 +6,33 @@ import LapContainer from './components/LapContainer/LapContainer'
 
 
 function App() {
+
+
+
   const [elapsedTime, setElapsedTime] = useState(0)
   const [isTimeRunning, setIsTimeRunning] = useState(false)
-  const [timeAtPause, setTimeAtPause] = useState(0)
+  //const intervalId = useRef(0)
   const [totalLapsElapsedTime, setTotalLapsElapsedTime] = useState(0) 
   const [laps, setLaps] = useState([])
   const [maxLap, setMaxLap] = useState({})
   const [minLap, setMinLap] = useState({})
   
-  useEffect(() => {
+  const runTimer = (startingDate) => {
+    const currentDate = Date.now()
+    setElapsedTime(currentDate - startingDate )
+  }
+    useEffect(() => {
     let intervalId
-    const runTimer = (startingDate) => {
-      const currentDate = Date.now()
-      
-      setElapsedTime(currentDate - startingDate + timeAtPause)
-    }
-    const startingDate = Date.now()
+    const startingDate = Date.now() - elapsedTime
     if (isTimeRunning) {
       intervalId = setInterval(runTimer, 10, startingDate)
     }
     if (!isTimeRunning) {
       clearInterval(intervalId)
-      setTimeAtPause(elapsedTime)
     }
     return () => { clearInterval(intervalId) } 
   }, [isTimeRunning]);
-
-  const toggleIsTimeRunning = () => {
-    setIsTimeRunning(!isTimeRunning)
-  }
-
+  
   const calculateMaxLap = (newLap) => {
     if (newLap.lapElapsedTime > maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
     if (!maxLap.lapElapsedTime) setMaxLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
@@ -44,7 +41,7 @@ function App() {
     if (newLap.lapElapsedTime < minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
     if (!minLap.lapElapsedTime) setMinLap({lapNumber: newLap.lapNumber, lapElapsedTime: newLap.lapElapsedTime})
   }
-
+  
   const addNewLap = () => {
     const lapNumber = laps.length + 1
     const previousLapsElapsedTime = laps.map(lapObj => lapObj.lapElapsedTime).reduce((acc, curr)=> acc + curr,0)
@@ -56,19 +53,27 @@ function App() {
     calculateMaxLap(newLap)
     calculateMinLap(newLap)
   }
-
+  
   const resetAll = () => {
     setElapsedTime(0)
-    setTimeAtPause(0)
     setTotalLapsElapsedTime(0)
     setLaps([])
+  }
+
+  const handleStartStop = () => {
+  /*   if(isTimeRunning) clearInterval(intervalId.current)
+    if(!isTimeRunning){
+      const startingDate = Date.now() - elapsedTime
+      intervalId.current = setInterval(runTimer, 10, startingDate )
+    } */
+    setIsTimeRunning(!isTimeRunning)
   }
   return (
     <main className="App">
       <section className="stopwatch-container">
         <section className="main-timer-container">
           <MainTimer elapsedTime={elapsedTime} />
-          <Buttons toggleIsTimeRunning={toggleIsTimeRunning} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addNewLap} resetAll={resetAll} />
+          <Buttons handleStartStop={handleStartStop} isTimeRunning={isTimeRunning} elapsedTime={elapsedTime} addElapsedTime={addNewLap} resetAll={resetAll} />
         </section>
         <section className="laps-container">
           <LapContainer elapsedTime={elapsedTime} laps={laps} totalLapsElapsedTime={totalLapsElapsedTime} maxLap={maxLap} minLap={minLap}/>
