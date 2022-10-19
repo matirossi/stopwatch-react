@@ -73,16 +73,16 @@ button {
   border-radius: 50%;
   box-shadow: 0px 0px 0px 1.5px var(--main-bg-color) inset;
 }
-.disabled-button {
-  background-color: var(--disabled-button-bg-color);
-  border: 2px solid var(--disabled-button-bg-color);
-  color: var(--disabled-button-font-color);
-}
 
-.enabled-button {
+.lap-reset-button{
   background-color: var(--enabled-button-bg-color);
   border: 2px solid var(--enabled-button-bg-color);
   color: var(--main-font-color);
+}
+.lap-reset-button:disabled {
+  background-color: var(--disabled-button-bg-color);
+  border: 2px solid var(--disabled-button-bg-color);
+  color: var(--disabled-button-font-color);
 }
 
 .start-button {

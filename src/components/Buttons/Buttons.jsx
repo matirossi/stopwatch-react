@@ -1,10 +1,9 @@
 const Buttons = ({ handleStartStop, isTimeRunning, elapsedTime, addElapsedTime, resetAll }) => {
+
     return (
         <div className="buttons-container">
-            {!isTimeRunning && (!elapsedTime ? <button className="disabled-button">Lap</button> : <button className="enabled-button" onClick={resetAll}>reset</button>)}
-            {isTimeRunning && <button className="enabled-button" onClick={addElapsedTime}>Lap</button>}
-            {!isTimeRunning && <button className="start-button" onClick={handleStartStop}>Start</button>}
-            {isTimeRunning && <button className="stop-button" onClick={handleStartStop}>Stop</button>}
+            <button className="lap-reset-button" disabled={!elapsedTime ? true : false} onClick={isTimeRunning ? addElapsedTime : resetAll}>{(!isTimeRunning && elapsedTime) ? "reset" : "Lap"}</button>
+            <button className={isTimeRunning ? "stop-button" : "start-button"} onClick={handleStartStop}>{isTimeRunning ? "Stop" : "Start"}</button>
         </div>
     )
 }
