@@ -1,11 +1,11 @@
 :root {
-  --main-bg-color: #030003;
+  --main-bg-color: #020002;
   --main-font-color: #fffcff;
   --disabled-button-bg-color: #201c22;
   --enabled-button-bg-color: #373338;
   --disabled-button-font-color: #8e8a93;
-  --start-button-bg-color: #0b2a14;
-  --start-button-font-color: #4abd67;
+  --start-button-bg-color: #0A2B13;
+  --start-button-font-color: #32BC54;
   --stop-button-bg-color: #360e0f;
   --stop-butotn-font-color: #dd3e39;
   --max-value-lap-font-color: #ed4b49;
@@ -121,11 +121,6 @@ button {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.clock-menu {
-  height: 67px;
-  background-color: #222223;
 }
 
 .max-value-lap {

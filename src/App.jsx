@@ -1,8 +1,9 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import './App.css'
 import Buttons from './components/Buttons/Buttons'
 import MainTimer from './components/MainTimer/MainTimer'
 import LapContainer from './components/LapContainer/LapContainer'
+import { Footer } from './components/Footer/Footer'
 
 function App() {
   const lapsReducer = (state, action) => {
@@ -21,8 +22,6 @@ function App() {
   const [isTimeRunning, setIsTimeRunning] = useState(false)
   const [{laps, maxLap, minLap, totalLapsElapsedTime}, lapsDispatch] = useReducer(lapsReducer, {laps: [], maxLap:{lapElapsedTime: 0}, minLap: {lapElapsedTime: Infinity}, totalLapsElapsedTime: 0} )
 
-  //const intervalId = useRef(0)
-  
   const runTimer = (startingDate) => {
     const currentDate = Date.now()
     setElapsedTime(currentDate - startingDate )
@@ -61,11 +60,6 @@ function App() {
   }
 
   const handleStartStop = () => {
-  /*   if(isTimeRunning) clearInterval(intervalId.current)
-    if(!isTimeRunning){
-      const startingDate = Date.now() - elapsedTime
-      intervalId.current = setInterval(runTimer, 10, startingDate )
-    } */
     setIsTimeRunning(!isTimeRunning)
   }
   return (
@@ -79,6 +73,7 @@ function App() {
           <LapContainer elapsedTime={elapsedTime} laps={laps} totalLapsElapsedTime={totalLapsElapsedTime} maxLap={maxLap} minLap={minLap}/>
         </section>
       </section>
+        <Footer/>
     </main>
   )
 }
