@@ -34,7 +34,7 @@ main {
   height: 24px;
 }
 .stopwatch-container {
-  height: 625px;
+  height: 650px;
   display: flex;
   flex-direction: column;
   margin-left: 13px;
